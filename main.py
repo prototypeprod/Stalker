@@ -12,7 +12,7 @@ linkgex = re.compile(
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
 #Start of program
-name = "SJI Singapore"
+name = "Saint Joseph's Institution"
 
 def getpage(query, page=0):
     encoded = urlencode({'q':query, 'start':page*10})
@@ -31,7 +31,7 @@ def getimagesurl(site):
     return urls
 
 
-for i in range(1000):
+for i in range(1):
     for result in getpage(name, i).cssselect(".r a"):
         url = result.get("href")
         if url.startswith("/url?"):
@@ -39,25 +39,29 @@ for i in range(1000):
         if re.match(linkgex, url[0]):
             try:
                 imgurls = getimagesurl(url[0])
-
+                y = 0
                 for imgurl in imgurls:
+                    y = y+1
                     print("---")
                     try:
                         if imgurl['src']:
                             parseurl = imgurl['src']
-                            filename = re.search(r'/([\w_-]+[.](jpg|gif|png))$', imgurl['src'])
-                            if ('http' or 'https') not in imgurl['src']:
+                            filename = re.search(r'([\w_-]+[.](jpg|gif|png))$', imgurl['src'])
+                            if imgurl['src'][0] == "/":
                                 # sometimes an image source can be relative
                                 if imgurl['src'][0] == "/"or'\\':
-                                    netloc = urlparse(url).netloc
-                                    parseurl = netloc+url[0]+str(imgurl['src'])
+                                    netloc = urlparse(url[0]).netloc
+                                    parseurl = "http://"+netloc+str(imgurl['src'])
                                 else:
                                     parseurl = url[0]+str(imgurl['src'])
                             print(parseurl)
                             response = requests.get(parseurl)
+                            print(filename.group(1))
                             with open("./output/"+filename.group(1), 'wb') as f:
                                 f.write(response.content)
                     except Exception as e:
                         print(e)
-            except:
+                        pass
+            except Exception as e:
+                print(e)
                 pass
