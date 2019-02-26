@@ -1,4 +1,7 @@
 # Stalker
+##### Significant technological advancement, Let's kill everyone's rights
+<br>
+<br>
 Stalk Someone.
 
 Looking for you ex-friends? Maybe you want to know more about ~~your employee~~ 

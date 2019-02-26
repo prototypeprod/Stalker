@@ -16,7 +16,7 @@ linkgex = re.compile(
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
 #Start of program
-name = "James Chen"
+name = "Name"
 
 def getpage(query, page=0):
     encoded = urlencode({'q':query, 'start':page*10})
@@ -38,7 +38,7 @@ harvest = {}
 with open('./output/harvested.json', 'w') as outfile:
     json.dump(harvest, outfile)
 
-for i in range(3):
+for i in range(100):
     r = 0
     for result in getpage(name, i).cssselect(".r a"):
         r = r + 1
@@ -57,7 +57,7 @@ for i in range(3):
                             parseurl = imgurl['src']
                             if 'http' not in imgurl['src']:
                                 # sometimes an image source can be relative
-                                if (imgurl['src'][0] == "//" or "\\\\") and (imgurl['src'][1] == "//" or "\\\\"):
+                                if imgurl['src'][:2] == "\\\\":
                                     print("1")
                                     parseurl = "http://"+(imgurl['src'][2:])
                                 elif imgurl['src'][0] == "/" or "\\":
